@@ -1,0 +1,42 @@
+<%- include('../partials/header', { title: 'Accueil' }) %>
+
+<main>
+  <h1>Gestion des utilisateurs</h1>
+
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+
+  <form action="/users" method="POST" class="form-add">
+    <input type="text" name="nom" placeholder="Nom" required>
+    <input type="text" name="prenom" placeholder="Prénom" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <% if (users.length) { %>
+    <ul class="user-list">
+      <% users.forEach(u => { %>
+        <li>
+          <form action="/users/<%= u.id %>/edit" method="POST" class="form-inline">
+            <input name="nom" value="<%= u.nom %>" required>
+            <input name="prenom" value="<%= u.prenom %>" required>
+            <input name="email" value="<%= u.email %>" required>
+
+            <div class="actions">
+              <button type="submit" class="btn-edit">Modifier</button>
+            </div>
+          </form>
+
+          <form action="/users/<%= u.id %>/delete" method="POST">
+            <button type="submit" class="btn-delete">Supprimer</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="empty">Aucun utilisateur trouvé.</p>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>
